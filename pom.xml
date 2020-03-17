@@ -22,15 +22,19 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+	        <maven.compiler.source>1.8</maven.compiler.source>
+                <maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
     <distributionManagement>
         <repository>
-            <id>releases</id>
+            <id>release</id>
+            <name>releases</name>
             <url>http://localhost:8081/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
-            <id>snapshots</id>
+            <id>snapshot</id>
+            <name>snapshots</name>
             <url>http://localhost:8081/repository/maven-snapshot/</url>
         </snapshotRepository>
     </distributionManagement>
