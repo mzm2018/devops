@@ -68,5 +68,4 @@ node {
        sh "curl --retry-delay 10 --retry 5 http://localhost:8180/devops"
    }
 
-
 }
