@@ -68,6 +68,7 @@ node {
        sh "curl --retry-delay 10 --retry 5 http://localhost:8180/devops"
    }
 
+
  if(env.BRANCH_NAME ==~ /release.*/){
         pom = readMavenPom file: 'pom.xml'
         artifactVersion = pom.version.replace("-SNAPSHOT", "")
