@@ -35,4 +35,12 @@ node {
    stage("Smoke Test"){
        sh "curl --retry-delay 10 --retry 5 http://localhost:8080/devops"
    }
+   stage('Upload Artifact') {
+      if (isUnix()) {
+         sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore clean deploy"
+      } else {
+         bat(/"${mvnHome}\bin\mvn" -Dmaven.test.failure.ignore clean deploy/)
+      }
+   }
+
 }
