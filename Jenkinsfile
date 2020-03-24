@@ -13,7 +13,7 @@ node {
   stage('Checkout') {
      checkout scm
   }
-  
+
    stage('Build') {
       if (isUnix()) {
          sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore clean package"
@@ -48,7 +48,6 @@ node {
            bat(/"${mvnHome}\bin\mvn" clean package/)
         }
       }
-
     }
 
     if(env.BRANCH_NAME == 'develop'){
@@ -58,6 +57,7 @@ node {
         } else {
            bat(/"${mvnHome}\bin\mvn" clean deploy/)
         }
+      }
       }
 
 
