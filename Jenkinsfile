@@ -13,7 +13,7 @@ node {
   stage('Checkout') {
      checkout scm
   }
-  
+
    stage('Build') {
       if (isUnix()) {
          sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore clean package"
@@ -48,7 +48,6 @@ node {
            bat(/"${mvnHome}\bin\mvn" clean package/)
         }
       }
-
     }
 
     if(env.BRANCH_NAME == 'develop'){
@@ -59,6 +58,7 @@ node {
            bat(/"${mvnHome}\bin\mvn" clean deploy/)
         }
       }
+      }
 
 
    stage('Deploy') {
@@ -67,6 +67,5 @@ node {
    stage("Smoke Test"){
        sh "curl --retry-delay 10 --retry 5 http://localhost:8180/devops"
    }
-
 
 }
