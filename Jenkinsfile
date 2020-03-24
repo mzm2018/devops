@@ -1,9 +1,19 @@
 node {
-   def mvnHome
-   stage('Prepare') {
-      git url: 'https://github.com/mzm2018/devops.git', branch: 'develop'
-      mvnHome = tool 'maven'
-   }
+
+  def pom
+  def artifactVersion
+  def tagVersion
+  def retrieveArtifact
+  def mvnHome
+
+  stage('Prepare') {
+    mvnHome = tool 'maven'
+  }
+
+  stage('Checkout') {
+     checkout scm
+  }
+  
    stage('Build') {
       if (isUnix()) {
          sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore clean package"
@@ -29,18 +39,34 @@ node {
          bat(/"${mvnHome}\bin\mvn" sonar:sonar/)
       }
    }
+
+   if(env.BRANCH_NAME == 'master'){
+      stage('Validate Build Post Prod Release') {
+        if (isUnix()) {
+           sh "'${mvnHome}/bin/mvn' clean package"
+        } else {
+           bat(/"${mvnHome}\bin\mvn" clean package/)
+        }
+      }
+
+    }
+
+    if(env.BRANCH_NAME == 'develop'){
+      stage('Snapshot Build And Upload Artifacts') {
+        if (isUnix()) {
+           sh "'${mvnHome}/bin/mvn' clean deploy"
+        } else {
+           bat(/"${mvnHome}\bin\mvn" clean deploy/)
+        }
+      }
+
+
    stage('Deploy') {
        sh 'curl -u jenkins:jenkins -T target/**.war "http://localhost:8180/manager/text/deploy?path=/devops&update=true"'
    }
    stage("Smoke Test"){
        sh "curl --retry-delay 10 --retry 5 http://localhost:8180/devops"
    }
-   stage('Upload Artifact') {
-      if (isUnix()) {
-         sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore clean deploy"
-      } else {
-         bat(/"${mvnHome}\bin\mvn" -Dmaven.test.failure.ignore clean deploy/)
-      }
-   }
+
 
 }
