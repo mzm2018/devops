@@ -34,7 +34,7 @@ node {
    }
    stage('Sonar') {
       if (isUnix()) {
-         sh "'${mvnHome}/bin/mvn' -Dsonar.login=squ_874c599142d81bd570f3a0f367493a0b14f683fb -Dsonar.projectKey=devops  sonar:sonar"
+         sh "'${mvnHome}/bin/mvn' -Dsonar.login=squ_f994bbf9109bb1eeed9f31509bd40d4c2e5926fe  -Dsonar.projectKey=devops  sonar:sonar"
       } else {
          bat(/"${mvnHome}\bin\mvn sonar:sonar -Dsonar.login=squ_874c599142d81bd570f3a0f367493a0b14f683fb -Dsonar.projectKey=devops"/)
       }
